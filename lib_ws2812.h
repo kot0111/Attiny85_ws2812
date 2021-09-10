@@ -1,5 +1,5 @@
 	signed char i=0,m=0,n=0;
-	
+
 	#define red 1
 	#define orange 2
 	#define yellow 3
@@ -10,7 +10,7 @@
 	#define white 8
 	#define none 9
 
-////Отправка бита ЛОГ.0 контроллеру светодиода
+//Sending a logical 0
 void Send_bit_0(void)
 {
 	PORTB|=(1<<1);
@@ -19,7 +19,7 @@ void Send_bit_0(void)
 	asm("nop");
 }
 
-//Отправка бита ЛОГ.1 контроллеру светодиода
+//Sending a logical 1
 void Send_bit_1(void)
 {
 	PORTB|=(1<<1);
@@ -28,7 +28,7 @@ void Send_bit_1(void)
 	asm("nop");
 }
 
-//Отправить оттенок цвета
+//Sending color
 void Send_Byte(unsigned char redshade, unsigned char greenshade, unsigned char blueshade)
 {
 	signed char i;
@@ -49,55 +49,25 @@ void Send_Byte(unsigned char redshade, unsigned char greenshade, unsigned char b
 	}
 }
 
-//Отправить цвет
+//Sending a color by name
 void Send_color(unsigned char c)
 {
 	switch(c)
 	{
-		case 1: Send_Byte(0x2F,0x00,0x00);break;//Красный
-		case 2: Send_Byte(0x2F,0x1E,0x00);break;//Оранжевый
-		case 3: Send_Byte(0x2F,0x2F,0x00);break;//Желтый
-		case 4: Send_Byte(0x00,0x2F,0x00);break;//Зеленый
-		case 5: Send_Byte(0x00,0x2F,0x2F);break;//Голубой
-		case 6: Send_Byte(0x00,0x00,0x2F);break;//Синий
-		case 7: Send_Byte(0x2F,0x00,0x2F);break;//Фиолетовый
-		case 8: Send_Byte(0x2F,0x2F,0x2F);break;//Белый
-		case 9: Send_Byte(0x00,0x00,0x00);break;//Нет цвета (погасить)
-		
+		case 1: Send_Byte(0x2F,0x00,0x00);break;//red
+		case 2: Send_Byte(0x2F,0x1E,0x00);break;//orange
+		case 3: Send_Byte(0x2F,0x2F,0x00);break;//yellow
+		case 4: Send_Byte(0x00,0x2F,0x00);break;//green
+		case 5: Send_Byte(0x00,0x2F,0x2F);break;//cyan
+		case 6: Send_Byte(0x00,0x00,0x2F);break;//blue
+		case 7: Send_Byte(0x2F,0x00,0x2F);break;//purple
+		case 8: Send_Byte(0x2F,0x2F,0x2F);break;//white
+		case 9: Send_Byte(0x00,0x00,0x00);break;//none
+
 	}
 }
 
-/*Отправить 15 цветов
-void Serial_15_colors(char c1, char c2, char c3, char c4, char c5,
-char c6, char c7, char c8, char c9, char c10,
-char c11,char c12,char c13,char c14,char c15)
-{
-	Send_color(c1);
-	Send_color(c2);
-	Send_color(c3);
-	Send_color(c4);
-	Send_color(c5);
-	Send_color(c6);
-	Send_color(c7);
-	Send_color(c8);
-	Send_color(c9);
-	Send_color(c10);
-	Send_color(c11);
-	Send_color(c12);
-	Send_color(c13);
-	Send_color(c14);
-	Send_color(c15);
-}
-//Отправить 5 цветов
-void Serial_5_colors(char c1, char c2, char c3, char c4, char c5)
-{
-	Send_color(c1);
-	Send_color(c2);
-	Send_color(c3);
-	Send_color(c4);
-	Send_color(c5);
-}
-*/
+//single-color glow
 void SetLine(int t,unsigned char redshade, unsigned char greenshade, unsigned char blueshade)
 {
 	for (int j = t;j>0;j--)
@@ -107,10 +77,10 @@ void SetLine(int t,unsigned char redshade, unsigned char greenshade, unsigned ch
 	_delay_ms(100);
 }
 
-//Анимация сдвиг
+//animation of color movement
 void shift (int t,unsigned char r1, unsigned char g1,unsigned char b1, unsigned char r2, unsigned char g2,unsigned char b2)
 {
-	
+
 	for (int i=0;i<t;i++)
 	{
 		for (int j=0;j<t;j++)
@@ -123,10 +93,10 @@ void shift (int t,unsigned char r1, unsigned char g1,unsigned char b1, unsigned 
 		}
 		_delay_ms(100);
 	}
-	
+
 }
 
-
+//rainbow animation
 void shift_rainbow(int t)
 {
 	unsigned char a[t+8];
@@ -137,9 +107,9 @@ void shift_rainbow(int t)
 		{
 			a[i]=8-i;
 		} else a[i]=9;
-		
+
 	}
-		
+
 	for (int st=0;st<t+8;st++)
 	{
 		for (int l = 8;l<t+8;l++)
@@ -151,10 +121,10 @@ void shift_rainbow(int t)
 			a[o]=a[o-1];
 		}
 		_delay_ms(100);
-	}	
+	}
 }
 
-
+//slow color change
 void change_color(int t)
 {
 	int shade;
@@ -183,4 +153,4 @@ void change_color(int t)
 		_delay_ms(50);
 	}
 
-}  
+}
