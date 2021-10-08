@@ -78,13 +78,17 @@ void SetLine(int t,unsigned char redshade, unsigned char greenshade, unsigned ch
 }
 
 //animation of color movement
-void shift (int t,unsigned char r1, unsigned char g1,unsigned char b1, unsigned char r2, unsigned char g2,unsigned char b2)
+void shift (int t,unsigned char r1, unsigned char g1,unsigned char b1, unsigned char r2, unsigned char g2,unsigned char b2,_Bool *flag)
 {
 
 	for (int i=0;i<t;i++)
 	{
 		for (int j=0;j<t;j++)
 		{
+			if (*flag)
+			{
+				break;
+			}
 			if (j==i)
 			{
 				Send_Byte(r1,g1,b1);
@@ -92,12 +96,16 @@ void shift (int t,unsigned char r1, unsigned char g1,unsigned char b1, unsigned 
 			else Send_Byte(r2,g2,b2);
 		}
 		_delay_ms(100);
+		if (*flag)
+		{
+			break;
+		}
 	}
 
 }
 
 //rainbow animation
-void shift_rainbow(int t)
+void shift_rainbow(int t, _Bool *flag)
 {
 	unsigned char a[t+8];
 		a[0]=9;
@@ -121,11 +129,15 @@ void shift_rainbow(int t)
 			a[o]=a[o-1];
 		}
 		_delay_ms(100);
+		if (*flag)
+		{
+			break;
+		}
 	}
 }
 
 //slow color change
-void change_color(int t)
+void change_color(int t, _Bool *flag)
 {
 	int shade;
 	for(shade=0;shade<70;shade++)
@@ -139,11 +151,19 @@ void change_color(int t)
 			Send_Byte(70-shade,shade,0x2F);
 		}
 		_delay_ms(50);
+		if (*flag)
+		{
+			break;
+		}
 	}
 	for(shade=70;shade>0;shade--)
 	{
 		for (int i=0;i<(t/5);i++)
 		{
+			if (*flag)
+			{
+				break;
+			}
 			Send_Byte(shade,70-shade,0x2F);
 			Send_Byte(0x2F,shade,0x2F);
 			Send_Byte(0x2F,0x2F,70-shade);
@@ -151,6 +171,10 @@ void change_color(int t)
 			Send_Byte(70-shade,shade,0x2F);
 		}
 		_delay_ms(50);
+		if (*flag)
+		{
+			break;
+		}
 	}
 
 }

@@ -58,10 +58,10 @@ int main(void)
 
 		switch (n)//changing the light modes
 		{
-			case 0:shift(NumLight,0xFF,0xFF,0xFF,0x00,0x00,0xFF);break;
-			case 1:shift(NumLight,0x00,0xFF,0x00,0xFF,0xFF,0xFF);break;
-			case 2:shift_rainbow(NumLight);break;
-			case 3:change_color(NumLight);break;
+			case 0:shift(NumLight,0xFF,0xFF,0xFF,0x00,0x00,0xFF,&flag);break;
+			case 1:shift(NumLight,0x00,0xFF,0x00,0xFF,0xFF,0xFF,&flag);break;
+			case 2:shift_rainbow(NumLight,&flag);break;
+			case 3:change_color(NumLight,&flag);break;
 			case 4:SetLine(NumLight,0xFF,0xFF,0xFF);break;
 		}
 
