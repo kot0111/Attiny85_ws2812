@@ -35,8 +35,8 @@ void _port_ini(void)
 	//Configuring PB1 as the output pin
 	DDRB|=(1<<1);
 	//Configuring PB2, PB3, PB4 as the input pin
-	DDRB&=~(1<<2||1<<3||1<<4);
-	PORTB&=~(1<<2||1<<3||1<<4);
+	DDRB&=~(1<<2|1<<3|1<<4);
+	PORTB&=~(1<<2|1<<3|1<<4);
 }
 
 
