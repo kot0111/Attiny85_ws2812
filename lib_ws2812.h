@@ -67,6 +67,46 @@ void Send_color(unsigned char c)
 	}
 }
 
+void mWHEEL(int color) {
+	unsigned char _r, _g, _b;
+	if (color <= 255&&color>=0) {           // красный макс, зелёный растёт
+		_r = 255;
+		_g = color;
+		_b = 0;
+	}
+	else if (color > 255 && color <= 510) {   // зелёный макс, падает красный
+		_r = 510 - color;
+		_g = 255;
+		_b = 0;
+	}
+	else if (color > 510 && color <= 765) {   // зелёный макс, растёт синий
+		_r = 0;
+		_g = 255;
+		_b = color - 510;
+	}
+	else if (color > 765 && color <= 1020) {  // синий макс, падает зелёный
+		_r = 0;
+		_g = 1020 - color;
+		_b = 255;
+	}
+	else if (color > 1020 && color <= 1275) {   // синий макс, растёт красный
+		_r = color - 1020;
+		_g = 0;
+		_b = 255;
+	}
+	else if (color > 1275 && color <= 1530) { // красный макс, падает синий
+		_r = 255;
+		_g = 0;
+		_b = 1530 - color;
+	} else
+	{
+		_r = 0;
+		_g = 0;
+		_b = 0;
+	}
+	Send_Byte(_r, _g, _b);
+}
+
 //single-color glow
 void SetLine(int t,unsigned char redshade, unsigned char greenshade, unsigned char blueshade)
 {
@@ -105,28 +145,13 @@ void shift (int t,unsigned char r1, unsigned char g1,unsigned char b1, unsigned 
 }
 
 //rainbow animation
-void shift_rainbow(int t, _Bool *flag)
+void shift_rainbow(int t, _Bool *flag, int multiplicator)
 {
-	unsigned char a[t+8];
-		a[0]=9;
-	for (int i=1;i<=t+7;i++)
+	for (int st=0;st<t+(1530/multiplicator)+1;st++)
 	{
-		if (i<8)
+		for (int l = 0;l<t;l++)
 		{
-			a[i]=8-i;
-		} else a[i]=9;
-
-	}
-
-	for (int st=0;st<t+8;st++)
-	{
-		for (int l = 8;l<t+8;l++)
-		{
-			Send_color(a[l]);
-		}
-		for (int o = t+7;o>0;o--)
-		{
-			a[o]=a[o-1];
+			mWHEEL(multiplicator*(st-l));
 		}
 		_delay_ms(100);
 		if (*flag)

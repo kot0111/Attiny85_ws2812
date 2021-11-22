@@ -16,6 +16,7 @@ _Bool flag = 0;
 //Interrupt handler
 ISR(PCINT0_vect)
 {
+	_delay_ms(10);
 	if (PINB&&(1<<2))
 	{
 		flag=1;
@@ -60,7 +61,7 @@ int main(void)
 		{
 			case 0:shift(NumLight,0xFF,0xFF,0xFF,0x00,0x00,0xFF,&flag);break;
 			case 1:shift(NumLight,0x00,0xFF,0x00,0xFF,0xFF,0xFF,&flag);break;
-			case 2:shift_rainbow(NumLight,&flag);break;
+			case 2:shift_rainbow(NumLight*10,&flag,150);break;
 			case 3:change_color(NumLight,&flag);break;
 			case 4:SetLine(NumLight,0xFF,0xFF,0xFF);break;
 		}
